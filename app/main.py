@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
@@ -5,8 +7,16 @@ from sqlalchemy import text
 from app.config import settings
 from app.db import engine
 from app.routers import auth, internal, leads, monitoring, properties, property_import, suggestions
+from app.seed import seed_demo_broker
 
-app = FastAPI(title="Cold Call Backend")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await seed_demo_broker()
+    yield
+
+
+app = FastAPI(title="Cold Call Backend", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

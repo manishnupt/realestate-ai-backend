@@ -10,6 +10,12 @@ class Settings(BaseSettings):
 
     cors_origins: str = "http://localhost:5173"
 
+    # Pilot/demo mode only — seeds a known-password broker account on startup and
+    # tells the dashboard login screen to surface it. Never set in production.
+    show_demo_login: bool = False
+    demo_broker_email: str = "demo@example.com"
+    demo_broker_password: str = "changeme"
+
     voice_service_url: str = "http://localhost:8001"
     internal_api_secret: str = "dev-internal-secret-change-me"
 
